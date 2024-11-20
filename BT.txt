@@ -1,0 +1,55 @@
+public final class Drivers {
+	
+	static AppiumDriver driver;
+	static HashMap<String, Object> browserstackOptions=new HashMap<String, Object>();
+    static final String isCloud="true";
+    static UiAutomator2Options options;
+    
+	
+	public static AppiumDriver createAndroidDriverForNativeApp(String deviceName, String udid, int port, String emulator) throws MalformedURLException, URISyntaxException
+	{
+		if(isCloud.contains("false"))
+		{
+		UiAutomator2Options options = new UiAutomator2Options();
+    	options.setDeviceName(deviceName);
+    	options.setUdid(udid);
+    	//options.setAppPackage(getConfig(ConfigJson.APP_PACKAGE));
+    	//options.setAppActivity(getConfig(ConfigJson.APP_ACTIVITY));
+    	
+		
+    	
+    	if (emulator.equalsIgnoreCase("yes")) {
+    		options.setAvd(deviceName);
+        	options.setAvdLaunchTimeout(Duration.ofSeconds(Integer.parseInt(getConfig(ConfigJson.AVD_LAUNCH_TIMEOUT))));
+        	
+        	
+    	}
+    	options.setApp(FrameworkConstants.ANDROID_APK_PATH);
+    	driver= new AndroidDriver(new URI(getConfig(ConfigJson.APPIUM_URL)).toURL(), options);
+    	
+		}
+		else {
+			
+			
+			browserstackOptions.put("userName", "raghavendra_actLOV");
+			browserstackOptions.put("accessKey", "6vbp7SDvmzMuqpsPWgkn");
+			browserstackOptions.put("appiumVersion", "2.4.1");
+			
+			
+			
+			options.setDeviceName("OnePlus 9");
+			options.setPlatformVersion("11.0");
+			options.setApp("bs://3487d40d35cd367511d227d33a1b65fd3b065671");
+			options.setCapability("bstack:options", browserstackOptions);
+			
+			
+			//driver= new AndroidDriver(new URL("https://hub-cloud.browserstack.com/wd/hub"), options);
+
+			
+		}
+		return new AndroidDriver(new URL("https://hub-cloud.browserstack.com/wd/hub"), options);
+			
+    	
+
+	
+	}
